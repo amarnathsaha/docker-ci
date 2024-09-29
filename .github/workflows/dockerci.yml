@@ -1,0 +1,17 @@
+name: docker image CI-Pipeline
+run-name: ${{ github.actor }} is learning github actions
+
+on: [push]
+
+jobs:
+  docker-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: docker duild
+        run: docker build -t amarnathsaha/docker-ci-image:latest .
+
+      - name: docker images
+        run: docker images
