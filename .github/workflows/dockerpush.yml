@@ -1,10 +1,10 @@
-name: docker image CI-Pipeline
-run-name: ${{ github.actor }} is learning github actions
+name: docker push CI-Pipeline
+run-name: ${{ github.actor }} is learning github actions for docker push.
 
 on: [push]
 
 jobs:
-  docker-pipeline:
+  docker-push-pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,7 +20,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Docker push
         run: docker push amarnathsaha/docker-ci-image:latest
