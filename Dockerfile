@@ -1,11 +1,11 @@
 # Stage 1: Build stage
-FROM python:3.10-slim as builder
+FROM python:latest as builder
 
 # Install Flask and other dependencies
 RUN pip install --no-cache-dir flask==3.0.*
 
 # Stage 2: Production stage
-FROM python:3.10-slim
+FROM python:latest
 
 # Copy the installed Flask from the builder stage
 COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
