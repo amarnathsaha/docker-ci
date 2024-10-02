@@ -1,10 +1,24 @@
-FROM ubuntu:22.04
+# Stage 1: Build stage
+FROM python:3.10-slim as builder
 
-RUN apt-get update && apt-get install -y python3 python3-pip
-RUN pip install flask==3.0.*
+# Install Flask and other dependencies
+RUN pip install --no-cache-dir flask==3.0.*
 
+# Stage 2: Production stage
+FROM python:3.10-slim
+
+# Copy the installed Flask from the builder stage
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/bin/flask /usr/local/bin/flask
+
+# Copy the application code
 COPY hello.py /
 
+# Set environment variables
 ENV FLASK_APP=hello
+
+# Expose the port
 EXPOSE 8000
+
+# Command to run the Flask app
 CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]
