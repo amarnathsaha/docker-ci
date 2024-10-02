@@ -1,10 +1,10 @@
-name: docker push CI-Pipeline
-run-name: ${{ github.actor }} is learning github actions for docker push.
+name: docker image CI-Pipeline
+run-name: ${{ github.actor }} is learning github actions
 
 on: [push]
 
 jobs:
-  docker-push-pipeline:
+  docker-pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,6 +15,17 @@ jobs:
 
       - name: Docker images
         run: docker images
+		
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: 'docker.io/amarnathsaha/docker-ci-image:latest'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
